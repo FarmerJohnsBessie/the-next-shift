@@ -5,12 +5,13 @@ import {fileURLToPath} from 'node:url';
 import {spawn} from 'node:child_process';
 
 const base=path.join(path.dirname(fileURLToPath(import.meta.url)),'dist');
-const mime={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.svg':'image/svg+xml','.png':'image/png'};
+const fonts=['barlow-condensed-latin-600-normal','barlow-condensed-latin-700-normal','barlow-condensed-latin-800-normal','barlow-latin-400-normal','barlow-latin-400-italic','barlow-latin-500-normal','barlow-latin-600-normal','barlow-latin-700-normal'].map(f=>`fonts/${f}.woff2`).concat('fonts/OFL.txt');
+const mime={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.woff2':'font/woff2','.txt':'text/plain; charset=utf-8'};
 export function createServer(){return http.createServer(async(req,res)=>{
   if(!['GET','HEAD'].includes(req.method)){res.writeHead(405,{'Allow':'GET, HEAD'});res.end();return;}
   let pathname;
   try{pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);}catch{res.writeHead(400);res.end('Invalid URL');return;}
-  const allowed=new Set(['index.html','styles.css','game.css','v4.css','v4-app.mjs','v4-engine.mjs','v4-game.mjs','v4-world.mjs','v4-ui.mjs','game.mjs','favicon.svg']);
+  const allowed=new Set(['index.html','story.html','shift.css','shift-app.mjs','shift-engine.mjs','shift-content.mjs','shift-floor.mjs','shift-art.mjs','styles.css','game.css','v4.css','v4-app.mjs','v4-engine.mjs','v4-game.mjs','v4-world.mjs','v4-ui.mjs','game.mjs','favicon.svg',...fonts]);
   const name=pathname==='/'?'index.html':pathname.slice(1);
   if(!allowed.has(name)){res.writeHead(404,{'Content-Type':'text/plain'});res.end('Not found');return;}
   try{

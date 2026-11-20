@@ -1,12 +1,12 @@
 {
   "name": "the-next-shift",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "private": true,
   "type": "module",
   "scripts": {
     "start": "node server.mjs",
-    "test": "node --test tests/v4.test.mjs",
-    "check": "node --check dist/v4-app.mjs && node --check dist/v4-game.mjs && node --check dist/v4-engine.mjs && node --check dist/v4-world.mjs && node --check dist/v4-ui.mjs && node --check server.mjs",
+    "test": "node --test tests/shift.test.mjs tests/v4.test.mjs",
+    "check": "node --check dist/shift-app.mjs && node --check dist/shift-engine.mjs && node --check dist/shift-content.mjs && node --check dist/shift-floor.mjs && node --check dist/shift-art.mjs && node --check dist/v4-app.mjs && node --check dist/v4-game.mjs && node --check dist/v4-engine.mjs && node --check dist/v4-world.mjs && node --check dist/v4-ui.mjs && node --check server.mjs",
     "prepare:pages": "node scripts/update-pages-entry.mjs"
   }
 }

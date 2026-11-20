@@ -2,20 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#253d34">
-  <meta name="description" content="A warehouse that remembers. Shape worker trust, the floor, and the next conversation in three interconnected stories.">
-  <title>The Next Shift — A warehouse ethics experience</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1E2B33">
+  <meta name="description" content="Run a robot warehouse for five weeks and decide what the robots remember about the people working next to them. A Team 12 ethics game.">
+  <title>The Next Shift — a warehouse ethics game</title>
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./styles.css">
-  <link rel="stylesheet" href="./game.css">
-  <link rel="stylesheet" href="./v4.css">
-  <script type="module" src="./v4-app.mjs"></script>
+  <link rel="preload" href="./fonts/barlow-condensed-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./fonts/barlow-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="./shift.css">
+  <script type="module" src="./shift-app.mjs"></script>
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to the experience</a>
-  <div id="app"></div>
-  <dialog id="info-dialog" aria-labelledby="dialog-title"><div id="dialog-content"></div><button class="dialog-close" data-action="close-dialog" aria-label="Close dialog">×</button></dialog>
-  <noscript>This experience needs JavaScript to follow your decisions. Enable JavaScript, then reload this page.</noscript>
+  <a class="skip-link" href="#main">Skip to the game</a>
+  <div id="app" aria-live="off"></div>
+  <div id="announcer" class="sr-only" aria-live="polite"></div>
+  <dialog id="sheet" aria-labelledby="sheet-title"><div id="sheet-body"></div></dialog>
+  <noscript>This game needs JavaScript. Enable it and reload the page.</noscript>
 </body>
 </html>

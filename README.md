@@ -1,83 +1,55 @@
-# The Next Shift — V4
+# The Next Shift — v5 (game)
 
-**[Play the game](https://99sslgz.github.io/the-next-shift-v4/)**
+**[Play the game](https://99sslgz.github.io/the-next-shift-v4/)** · [Source](https://github.com/99sslgz/the-next-shift-v4)
 
-A public, browser-based warehouse ethics game by Team 12. Open the game link to play without an account or installation. Progress stays in the visitor’s own browser.
+A browser game by Team 12 (Ethics & Policy Issues in Computing). You run a robot warehouse for five weeks and decide what the robots record about the people working next to them. Tim, Priya and Tom — the three scenarios from our presentation — show up as incidents you have to handle.
 
-## Share with the team
+No accounts, no installation, no analytics. Progress stays in the player’s own browser.
 
-- Game website — https://99sslgz.github.io/the-next-shift-v4/
-- Source repository — https://github.com/99sslgz/the-next-shift-v4
+## How it plays (10–15 minutes)
 
-The website is published with GitHub Pages from the main branch. The root index.html loads the V4 application from dist/. The .nojekyll file keeps the JavaScript modules and other static files available as supplied.
+1. **Write the rulebook.** Five dials, three options each: *Tracking*, *Targets*, *Incidents*, *Telling workers*, *Keeping data*. Presets: Max output, Middle road, Lock it down. Every option shows what it does to the meters each week.
+2. **Run five weeks.** The animated floor runs, then someone calls with a problem. Two calls per week, ten decisions in all. Hovering an option shows which meters it touches; keys 1–3 work too.
+3. **Watch five meters.** Orders, Safety, Health, Privacy, Trust. If any hits 0 the run ends early (walkout, burnout, accident, data scandal, or HQ replaces you).
+4. **Read the weekly wrap-up.** Every change is itemised: tap a meter row to see which rule, decision or ripple moved it. The rulebook can be changed between weeks.
+5. **Reach an ending.** Ten endings. The win, **The Fair Shift**, needs every meter at 50+ after week 5 *and* a handover rulebook that passes all four rules. The ending screen checks the rulebook against the rules, shows where Tim, Priya and Tom ended up, lists every decision, and compares with the previous run.
 
-## Working on the website
+Two views on the floor show the same data from both sides: **Manager view** (names and pace numbers, zone heat maps, or robots only, depending on the rulebook) and **Worker view** (what people are thinking). Clicking anyone or anything on the floor shows what the system records about them.
 
-The game source is in dist/. Edit the V4 modules and styles there. No installation or compilation is needed to play the hosted website. Run `node --test tests/v4.test.mjs` to verify changes. If dist/index.html changes, run `node scripts/update-pages-entry.mjs` to refresh the public entry page before pushing to main.
+## The Fair Shift rules (refined alignment strategy)
 
-A local, branching warehouse game for Team 12’s AMR Surveillance Policy project. V4 retains the cream paper, forest green, terracotta, serif headings, drawn characters, and warehouse floor of v1.
+1. **No individual productivity profiles.** No pace, ranking, idle-time or location histories about identifiable workers, and no automatic discipline. Covers “temporary” peak-season tracking, exports, hand-made spreadsheets and re-identifiable dashboards. Consent doesn’t create an exception.
+2. **Operations data, in team totals.** Real-time sensing for navigation and safe stopping; a worker is linked to a task only while it’s open; reports only for groups of 5+, with no fixed robot-to-person pairing.
+3. **A narrow incident exception.** Start with robot logs that identify no one; an independent reviewer may unlock the minimum identifying data for that incident window if a safety question is still open; every access logged; never reused for pace or discipline.
+4. **Notice, limits and remedies.** Plain-language notice before rollout; person–task links erased each shift (incident files kept until closed); workers can see, correct and appeal records; decisions based on banned data are void; a worker–management committee audits access.
 
-## Open the local website
+The in-game *Rules* page answers seven objections (managing poor performers, re-identification, safety needs, the loophole worry, consent, “just disclose it”, competitiveness) and links real-world anchors: the CNIL’s €32M fine against Amazon France Logistique, California’s AB 701 warehouse quota law, and Ontario’s electronic-monitoring policy requirement.
 
-Extract the entire ZIP. Double-click **Start-Next-Shift.cmd** and keep its window open while playing. The launcher finds Node.js 20+ from a normal installation or the current Codex runtime. It does not use a version-specific runtime path. A busy port is handled by selecting the next available local port and opening that address.
+## Design notes
 
-On a computer without Node.js or Codex, install Node.js LTS from https://nodejs.org. No application packages or build step are needed. Use the launcher because browsers restrict module loading when index.html is opened directly.
+- The engine is deterministic. The same rulebook and decisions always produce the same result, so runs can be compared fairly. There is no randomness.
+- The tests check that a rulebook that never changes can only win if it is the aligned one, that every ending is reachable, that every event and choice can appear, and that meters stay in range.
+- The numbers are game mechanics chosen by the team to show tradeoffs. They don’t predict real outcomes. All people, events and the company are fiction.
 
-## What changes in V4
+## Files
 
-The game contains 52 authored decision scenes across Tim, Priya, and Tom, with 20 ending families. A player sees a subset of the scenes because earlier conditions select later situations. The connected campaign carries the warehouse state between all three chapters. Single chapters start from their own initial conditions.
+- `dist/shift-content.mjs` — meters, rulebook dials, presets, the four rules, objections and sources, characters, events, ripples, endings. **Edit this to change the story or the balance.**
+- `dist/shift-engine.mjs` — the deterministic game engine (pure functions, runs in Node for tests).
+- `dist/shift-floor.mjs` — the animated warehouse floor (Canvas 2D, no image assets).
+- `dist/shift-art.mjs` — SVG portraits and icons.
+- `dist/shift-app.mjs`, `dist/shift.css` — the interface.
+- `dist/fonts/` — Barlow and Barlow Condensed, self-hosted (SIL Open Font License, `OFL.txt`).
+- `dist/story.html` + `dist/v4-*` — the previous long-form story version (v4), still playable and linked from the title screen.
+- `tests/shift.test.mjs` — game tests. `tests/v4.test.mjs` — v4 tests.
 
-Five visible signals describe the current world.
+## Working on it
 
-- The current character’s mood, expressed through a portrait, a line of dialogue, and an illustrative floor marker.
-- The team’s willingness to speak up.
-- Queue pressure, also reflected in waiting carts and the route illustration.
-- The data boundary, including active histories, inference risks, restricted incident files, and preserved dispute evidence.
-- The state of relevant evidence or accountability checks.
+```
+npm test           # runs both test files
+npm start          # local server at http://127.0.0.1:4186
+npm run prepare:pages   # after editing dist/index.html, refreshes the root index.html for GitHub Pages
+```
 
-These are authored, qualitative story states. Internal ordinal values drive transitions. They do not estimate worker health, actual feelings, warehouse throughput, injury rates, or policy effectiveness. Policy assessments are separate from character reactions.
+On Windows, double-click **Start-Next-Shift.cmd**. Browsers block ES modules from `file://`, so use the launcher or `npm start` rather than opening the HTML file directly.
 
-## Interconnected decisions
-
-- Delaying Tim’s break immediately changes his mood and opens a confrontation. The trainee’s response can travel into later reporting trust.
-- Protecting a break without preparing relief creates a packing problem. Missing queue coordination can create a separate overflow decision.
-- Asking for training after neglecting cover can produce a refusal that requires a concrete assignment or another response.
-- A team bonus can create group pressure even after individual rankings disappear.
-- A name-free robot dashboard can produce a reconstructed worker comparison. Restricting software incompletely can encourage a linked paper workaround.
-- Priya can withhold an account when the available reporting channel is not trusted. A protected channel makes that record available.
-- A supervisor’s update cannot include an identity link that was never released, or a pace comparison that was never obtained. Obtaining a restricted link still does not automatically authorize forwarding it.
-- Forwarding information beyond its purpose creates a disclosure problem and later reporting consequences.
-- A diagnosis without prepared validation time opens a further decision instead of silently counting as a completed check.
-- Tom’s account can depend on a usable appeal channel. Missing contextual evidence produces another inquiry.
-- A previously preserved appeal copy enables recovery after deletion. Without that earlier copy, the recovery option is unavailable.
-- A reviewer without authority creates a further obstacle. A promised remedy needs implementation before the story can portray a return.
-
-Before-and-after cards show immediate signal changes. The next scene explains why it exists. Delayed ripples advance only on committed decisions. There is no penalty for reading slowly or leaving the page open. The character roster preserves earlier reactions while another chapter unfolds.
-
-## Endings and replay
-
-Endings depict the following shift, a later meeting, or a worker’s home or return. They show the resulting conditions and relationships without repeating the labels of the player’s choices. A separate collapsed journal holds the actual decisions, explanations, policy assessments, and world changes.
-
-Rewind from the journal to remove a decision and everything after it. The engine replays the remaining valid events, recalculating moods, evidence availability, delayed ripples, and later chapters. Completed routes and discovered endings remain in the browser until reset is confirmed. A comparison describes how the visible conditions differ between completed worlds.
-
-Progress is browser-local under **team12-next-shift-v4**, separate from older versions. Reload and use Continue your shift to resume. A journal can be downloaded as a local text file. If browser storage is unavailable, the game remains playable for the current visit.
-
-## Sources and project restrictions
-
-The three original scenarios and four policy rules come from **CT3 - Senario.pdf**. The scope and synthetic-data restrictions come from **Team 12 - Project Scope & Team Charter.pdf**. The live cross-examination informs the unresolved-safety-question gate and the robot-assignment re-identification test.
-
-All added dialogue, events, records, timings, emotions, planning allocations, branches, and endings are fictional. The early completion-message finding is a synthetic extension, not a claim about a real vendor. A depicted reinstatement is one authored employment outcome after review, not a rule automatically implied by the policy.
-
-There are no visitor accounts, analytics, response uploads, real worker records, warehouse connections, or physically accurate robot simulation. The local server binds only to 127.0.0.1. The proposal’s additional safeguards remain options for the team to evaluate.
-
-## Source structure and verification
-
-- dist/game.mjs holds the original scenario and policy material reused by the V4 model.
-- dist/v4-game.mjs adds follow-up scenes, context-dependent access, and the routing rules.
-- dist/v4-world.mjs defines discrete reactions, delayed effects, visible signals, and ending stories.
-- dist/v4-engine.mjs validates and replays decisions, restores progress, handles rewind, and exports journals.
-- dist/v4-ui.mjs and dist/v4-app.mjs render the world, decisions, and controls.
-- dist/styles.css, dist/game.css, and dist/v4.css retain and extend the visual design.
-- tests/v4.test.mjs checks 20 reachable endings, all 52 scenes, available alternatives, 150 deterministic route variations, causal chains, evidence gates, restoration, rewind, story content, and local serving.
-
-Run **node --test tests/v4.test.mjs**. The application has no third-party runtime dependencies.
+To rebalance, change numbers in `shift-content.mjs` and run `npm test`; the tests will fail if a non-aligned fixed rulebook becomes winnable or an ending becomes unreachable.
